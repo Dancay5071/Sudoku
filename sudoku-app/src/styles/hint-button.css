@@ -1,0 +1,230 @@
+.hint-btn-wrapper {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.hint-ring-svg {
+  display: block;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.hint-ring-track {
+  stroke: var(--hint-ring-track);
+}
+
+.hint-ring-progress {
+  stroke: var(--hint-ring);
+  transition: stroke-dashoffset 0.12s linear;
+}
+
+
+.hint-ring-ready-indicator {
+  stroke: var(--hint-ring);
+  opacity: 0.35;
+  animation: hint-ready-ring-in 0.4s var(--ease-out) both;
+}
+
+@keyframes hint-ready-ring-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.35;
+  }
+}
+
+.hint-bulb-icon {
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.hint-btn-wrapper--ready:hover .hint-bulb-icon {
+  color: var(--text-primary);
+}
+
+
+.hint-countdown-text {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  fill: var(--hint-count-color);
+  letter-spacing: -0.04em;
+}
+
+.hint-countdown-unit {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--hint-ring);
+  letter-spacing: 0;
+}
+
+.hint-btn {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  outline: none;
+  pointer-events: all;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.hint-btn:not(:disabled):hover {
+  background: rgba(107, 111, 196, 0.14);
+  box-shadow: 0 0 0 3px rgba(107, 111, 196, 0.22);
+}
+
+.hint-btn:not(:disabled):active {
+  background: rgba(168, 181, 232, 0.22);
+}
+
+.hint-btn:focus-visible {
+  box-shadow:
+    0 0 0 3px var(--bg-card),
+    0 0 0 5px var(--hint-ring);
+}
+
+.hint-btn:disabled {
+  cursor: not-allowed;
+}
+
+.hint-btn-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.hint-btn-wrapper--ready .hint-btn-label {
+  color: var(--primary);
+}
+
+.hint-btn-wrapper--cooldown .hint-btn-label {
+  color: var(--hint-count-color);
+  opacity: 0.7;
+}
+
+
+@keyframes hint-wrapper-spring {
+  0% {
+    transform: scale(1);
+  }
+
+  22% {
+    transform: scale(1.15);
+  }
+
+  50% {
+    transform: scale(0.95);
+  }
+
+  72% {
+    transform: scale(1.06);
+  }
+
+  88% {
+    transform: scale(0.98);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes hint-ring-glow {
+  0% {
+    filter: drop-shadow(0 0 0px rgba(107, 111, 196, 0));
+  }
+
+  28% {
+    filter: drop-shadow(0 0 10px rgba(107, 111, 196, 0.75));
+  }
+
+  65% {
+    filter: drop-shadow(0 0 5px rgba(107, 111, 196, 0.45));
+  }
+
+  100% {
+    filter: drop-shadow(0 0 0px rgba(107, 111, 196, 0));
+  }
+}
+
+.hint-btn-wrapper--just-ready {
+  animation: hint-wrapper-spring 0.65s var(--ease-spring) forwards;
+}
+
+.hint-btn-wrapper--just-ready .hint-ring-svg {
+  animation: hint-ring-glow 0.70s var(--ease-out) forwards;
+}
+
+
+@media (max-width: 800px) {
+  .hint-btn-wrapper {
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+  }
+}
+
+
+@media (prefers-color-scheme: dark) {
+  .hint-ring-track {
+    stroke: rgba(168, 181, 232, 0.12);
+  }
+
+  .hint-ring-progress {
+    stroke: var(--hint-ring);
+    opacity: 0.90;
+  }
+
+  .hint-ring-ready-indicator {
+    opacity: 0.28;
+  }
+
+  .hint-bulb-icon {
+    color: var(--text-secondary);
+  }
+
+  .hint-countdown-text {
+    fill: var(--hint-count-color);
+  }
+
+  .hint-btn:not(:disabled):hover {
+    background: rgba(107, 111, 196, 0.10);
+    box-shadow: 0 0 0 3px rgba(107, 111, 196, 0.18);
+  }
+
+  @keyframes hint-ring-glow {
+    0% {
+      filter: drop-shadow(0 0 0px rgba(107, 111, 196, 0));
+    }
+
+    28% {
+      filter: drop-shadow(0 0 14px rgba(107, 111, 196, 0.80));
+    }
+
+    65% {
+      filter: drop-shadow(0 0 7px rgba(107, 111, 196, 0.50));
+    }
+
+    100% {
+      filter: drop-shadow(0 0 0px rgba(107, 111, 196, 0));
+    }
+  }
+}

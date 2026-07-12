@@ -1,0 +1,173 @@
+:root {
+  --font-display: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --bg-surface: #fdf8f2;
+  --bg-card: #ffffff;
+  --bg-overlay: rgba(30, 20, 15, 0.55);
+
+  --primary: #c9785a;
+  --primary-light: #f5d0bf;
+  --primary-hover: #b5654a;
+
+  --accent: #6fa385;
+  --accent-light: #c5ddd2;
+
+  --cell-bg: #ffffff;
+  --cell-hover: #fdf3ec;
+  --cell-peer: #fde0cc;
+  --cell-same-value: #f8c4a5;
+  --cell-selected: #fddece;
+  --cell-given-bg: #fdfaf7;
+  --cell-error: #ffdad3;
+
+  --cell-completed: #d6ede6;
+  --cell-completed-text: #2d6e5a;
+  --cell-completed-note: #5b9e87;
+
+  --hint-ring: #6B6FC4;
+  --hint-ring-track: #e5e6f3;
+  --hint-count-color: #5c60b5;
+  --hint-cell-color: #6B6FC4;
+
+  --box-alt-bg: #faf3ed;
+
+  --text-primary: #2d1c10;
+  --text-secondary: #6b4535;
+  --text-muted: #8a6a5e;
+  --text-given: #2d1c10;
+  --text-user: #c9785a;
+  --text-error: #bf4040;
+  --text-notes: #7a5040;
+
+  --border-thin: #ecdcd4;
+  --border-medium: #d4b8ad;
+  --border-thick: #9a7060;
+
+  --border-light: 1px solid var(--border-thin);
+  --border-heavy: 2.5px solid var(--border-thick);
+
+  --radius-xs: 2px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+
+  --shadow-xs: 0 1px 3px rgba(58, 37, 24, 0.06);
+  --shadow-sm: 0 1px 2px rgba(58, 37, 24, 0.04),
+    0 2px 8px rgba(58, 37, 24, 0.07);
+  --shadow-md: 0 1px 3px rgba(58, 37, 24, 0.05),
+    0 4px 16px rgba(58, 37, 24, 0.10);
+  --shadow-lg: 0 2px 4px rgba(58, 37, 24, 0.05),
+    0 8px 32px rgba(58, 37, 24, 0.12);
+  --shadow-xl: 0 4px 6px rgba(58, 37, 24, 0.06),
+    0 20px 52px rgba(58, 37, 24, 0.15);
+
+  --shadow-primary-sm: 0 2px 12px rgba(201, 120, 90, 0.28);
+  --shadow-primary-md: 0 4px 22px rgba(201, 120, 90, 0.38);
+  --shadow-primary-lg: 0 6px 32px rgba(201, 120, 90, 0.48);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+
+  --hover-subtle: #fdf0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-surface: #181310;
+    --bg-card: #221d1a;
+    --bg-overlay: rgba(10, 6, 4, 0.72);
+
+    --primary: #e0967a;
+    --primary-light: #3d2218;
+    --primary-hover: #eda88e;
+
+    --accent: #7db898;
+    --accent-light: #1c3028;
+
+    --cell-bg: #221d1a;
+    --cell-hover: #2d2521;
+    --cell-peer: #2a2220;
+    --cell-same-value: #36261e;
+    --cell-selected: #3f2a22;
+    --cell-given-bg: #272220;
+    --cell-error: #3d1a16;
+
+    --cell-completed: #1a3830;
+    --cell-completed-text: #7ecfb4;
+    --cell-completed-note: #4d9e85;
+
+    --box-alt-bg: #1d1916;
+
+    --text-primary: #f2ece6;
+    --text-secondary: #c4a898;
+    --text-muted: #9a7c74;
+    --text-given: #f5f0ea;
+    --text-user: #e0967a;
+    --text-error: #e87070;
+    --text-notes: #b08070;
+
+    --hover-subtle: #2a2220;
+
+    --border-thin: #352d28;
+    --border-medium: #4a3830;
+    --border-thick: #6a5048;
+
+    --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.25);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.20),
+      0 2px 8px rgba(0, 0, 0, 0.30);
+    --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.25),
+      0 4px 16px rgba(0, 0, 0, 0.40);
+    --shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.25),
+      0 8px 32px rgba(0, 0, 0, 0.50);
+    --shadow-xl: 0 4px 6px rgba(0, 0, 0, 0.30),
+      0 20px 52px rgba(0, 0, 0, 0.60);
+
+    --shadow-primary-sm: 0 2px 12px rgba(224, 150, 122, 0.22);
+    --shadow-primary-md: 0 4px 22px rgba(224, 150, 122, 0.32);
+    --shadow-primary-lg: 0 6px 32px rgba(224, 150, 122, 0.42);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+.play-button,
+.cell-value,
+.toolbar-timer,
+.stat-value,
+.score-row__pts,
+.lb-card__score,
+.app-title,
+.modal-title,
+.mode-card-title,
+.difficulty-pill,
+.header-action,
+.modal-btn,
+.save-btn,
+.record-badge {
+  font-family: var(--font-display);
+}
