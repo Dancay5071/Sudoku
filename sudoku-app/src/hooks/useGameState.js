@@ -240,8 +240,6 @@ export default function useGameState() {
     startGame,
     returnToMenu,
     handleCellSelect,
-    handleValueInput,
-    handleErase,
     handleHint,
   };
 }

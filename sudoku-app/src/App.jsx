@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import SudokuBoard from './components/SudokuBoard';
-import NumberPad from './components/NumberPad';
 import { SidebarLeft, SidebarRight } from './components/Sidebars';
 import VictoryModal from './components/VictoryModal';
 import PlayButton from './components/PlayButton';
@@ -111,9 +110,7 @@ function GameScreen({
   isGameOver,
   onCellClick,
   onToggleNotes,
-  onErase,
   onBack,
-  onValueInput,
   onNewGame,
   completedCells,
   onHint,
@@ -147,11 +144,6 @@ function GameScreen({
           peers={peers}
           selectedValue={selectedValue}
           completedCells={completedCells}
-        />
-        <NumberPad
-          boardSize={boardSize}
-          onValueClick={onValueInput}
-          onErase={onErase}
         />
       </div>
 
@@ -210,8 +202,6 @@ export default function App() {
     startGame,
     returnToMenu,
     handleCellSelect,
-    handleValueInput,
-    handleErase,
     handleHint,
     completedCells,
   } = useGameState();
@@ -280,9 +270,7 @@ export default function App() {
               isGameOver={isGameOver}
               onCellClick={handleCellSelect}
               onToggleNotes={toggleNotes}
-              onErase={handleErase}
               onBack={returnToMenu}
-              onValueInput={handleValueInput}
               onNewGame={startGame}
               completedCells={completedCells}
               onHint={onHint}
