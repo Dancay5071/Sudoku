@@ -45,10 +45,13 @@ export function calculateScore({ elapsedTime, errorCount, difficulty, boardSize 
 
 const LOCAL_STORAGE_KEY = 'sudoku_local_leaderboard';
 
-function getLocalScores() {
+function getLocalScores(boardSize, difficulty) {
   try {
     const data = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
+    let scores = data ? JSON.parse(data) : [];
+    if (boardSize) scores = scores.filter(s => s.boardSize === boardSize);
+    if (difficulty) scores = scores.filter(s => s.difficulty === difficulty);
+    return scores;
   } catch {
     return [];
   }
@@ -72,11 +75,16 @@ function saveLocalScore(entry) {
   }
 }
 
-export async function fetchTopScores() {
+export async function fetchTopScores(boardSize, difficulty) {
   try {
-    const { data, error } = await supabase
+    let query = supabase
       .from('high_scores')
-      .select('name, score, elapsed_time, error_count, difficulty, board_size, created_at')
+      .select('name, score, elapsed_time, error_count, difficulty, board_size, created_at');
+      
+    if (boardSize) query = query.eq('board_size', boardSize);
+    if (difficulty) query = query.eq('difficulty', difficulty);
+
+    const { data, error } = await query
       .order('score', { ascending: false })
       .order('elapsed_time', { ascending: true })
       .limit(MAX_SCORES);
@@ -96,7 +104,7 @@ export async function fetchTopScores() {
 
   } catch (err) {
     console.warn('[leaderboard] Supabase fetch failed. Falling back to LocalStorage.', err.message);
-    return getLocalScores();
+    return getLocalScores(boardSize, difficulty);
   }
 }
 

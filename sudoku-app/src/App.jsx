@@ -7,7 +7,6 @@ import { SidebarLeft, SidebarRight } from './components/Sidebars';
 import VictoryModal from './components/VictoryModal';
 import PlayButton from './components/PlayButton';
 import { PortfolioAction, CafecitoAction, LeaderboardAction } from './components/Cafecito';
-import Leaderboard from './components/Leaderboard';
 import LeaderboardModal from './components/LeaderboardModal';
 import useGameState from './hooks/useGameState';
 import useHint from './hooks/useHint';
@@ -91,9 +90,7 @@ function SetupScreen({ boardSize, setBoardSize, difficulty, setDifficulty, onPla
           <p className="keyboard-hint">
             Navegá con <kbd className="kbd">↑↓←→</kbd> · Notas con <kbd className="kbd">N</kbd>
           </p>
-        </div>
-
-        <Leaderboard />
+      </div>
       </div>
     </motion.div>
   );

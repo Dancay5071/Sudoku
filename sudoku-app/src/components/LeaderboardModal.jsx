@@ -7,6 +7,13 @@ import { formatTime } from '../lib/gameUtils';
 const MEDAL_EMOJI = ['🥇', '🥈', '🥉'];
 const MEDAL_COLOR = ['#d4a017', '#9ba3b0', '#c87d52'];
 
+const MODES = [
+  { size: 9, label: 'Clásico 9×9' },
+  { size: 16, label: 'Hexa 16×16' }
+];
+
+const DIFFICULTIES = ['Fácil', 'Medio', 'Difícil'];
+
 function ScoreRow({ entry, position }) {
   return (
     <div className="score-row">
@@ -25,13 +32,15 @@ function ScoreRow({ entry, position }) {
 export default function LeaderboardModal({ isVisible, onClose }) {
   const [scores, setScores] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedSize, setSelectedSize] = useState(9);
+  const [selectedDifficulty, setSelectedDifficulty] = useState('Fácil');
 
   useEffect(() => {
     let mounted = true;
     async function load() {
       if (!isVisible) return;
       setLoading(true);
-      const data = await fetchTopScores();
+      const data = await fetchTopScores(selectedSize, selectedDifficulty);
       if (mounted) {
         setScores(data);
         setLoading(false);
@@ -39,7 +48,7 @@ export default function LeaderboardModal({ isVisible, onClose }) {
     }
     load();
     return () => { mounted = false; };
-  }, [isVisible]);
+  }, [isVisible, selectedSize, selectedDifficulty]);
 
   return (
     <AnimatePresence>
@@ -59,7 +68,7 @@ export default function LeaderboardModal({ isVisible, onClose }) {
             exit={{ scale: 0.92, y: 16, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 280, damping: 22 }}
             onClick={(e) => e.stopPropagation()}
-            style={{ maxWidth: '380px' }}
+            style={{ maxWidth: '420px' }}
           >
             <motion.div
               className="modal-icon"
@@ -79,9 +88,42 @@ export default function LeaderboardModal({ isVisible, onClose }) {
               Mejores Puntajes
             </motion.h2>
 
+            <motion.div 
+              className="leaderboard-filters" 
+              style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1.25rem' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
+                {MODES.map(m => (
+                  <button
+                    key={m.size}
+                    className={`difficulty-pill ${selectedSize === m.size ? 'active' : ''}`}
+                    onClick={() => setSelectedSize(m.size)}
+                    style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}
+                  >
+                    {m.label}
+                  </button>
+                ))}
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
+                {DIFFICULTIES.map(d => (
+                  <button
+                    key={d}
+                    className={`difficulty-pill ${selectedDifficulty === d ? 'active' : ''}`}
+                    onClick={() => setSelectedDifficulty(d)}
+                    style={{ fontSize: '0.8rem', padding: '0.3rem 0.6rem' }}
+                  >
+                    {d}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+
             <motion.div
               className="victory-leaderboard"
-              style={{ marginTop: '1.5rem', width: '100%' }}
+              style={{ marginTop: '1.5rem', width: '100%', minHeight: '120px' }}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
