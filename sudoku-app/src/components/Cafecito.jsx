@@ -1,26 +1,24 @@
 import React from 'react';
-import { PortfolioIcon, CafecitoIcon, LeaderboardIcon } from './icons';
+import { CafecitoIcon, LeaderboardIcon, InfoIcon } from './icons';
 import { motion } from 'framer-motion';
 import '../styles/animations.css';
 
-export function PortfolioAction({ portfolioUrl = '#', isPlaying = false }) {
+export function InstructionsAction({ onClick, isPlaying = false }) {
   return (
-    <motion.a
-      href={portfolioUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="header-action header-action--portfolio"
-      title="Ver Portfolio de Daniela Cabrera"
-      aria-label="Ver Portfolio"
+    <motion.button
+      onClick={onClick}
+      className="header-action header-action--instructions"
+      title="Cómo Jugar"
+      aria-label="Cómo Jugar"
       animate={{ opacity: isPlaying ? 0.4 : 1, x: 0, y: 0 }}
       whileHover={{ opacity: 1, scale: 1.04 }}
       whileTap={{ scale: 0.96 }}
-      initial={{ opacity: 0, x: -16 }}
+      initial={{ opacity: 0, y: -16 }}
       transition={{ duration: 0.4, delay: 0.2 }}
     >
-      <PortfolioIcon size={14} aria-hidden="true" />
-      <span className="header-action__label">Portfolio</span>
-    </motion.a>
+      <InfoIcon size={14} aria-hidden="true" />
+      <span className="header-action__label">Cómo Jugar</span>
+    </motion.button>
   );
 }
 

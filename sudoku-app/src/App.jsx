@@ -5,10 +5,13 @@ import SudokuBoard from './components/SudokuBoard';
 import { SidebarLeft, SidebarRight } from './components/Sidebars';
 import VictoryModal from './components/VictoryModal';
 import PlayButton from './components/PlayButton';
-import { PortfolioAction, CafecitoAction, LeaderboardAction } from './components/Cafecito';
+import { CafecitoAction, LeaderboardAction, InstructionsAction } from './components/Cafecito';
 import LeaderboardModal from './components/LeaderboardModal';
+import InstructionsModal from './components/InstructionsModal';
 import useGameState from './hooks/useGameState';
 import useHint from './hooks/useHint';
+import useTheme from './hooks/useTheme';
+import ThemeToggle from './components/ThemeToggle';
 import { SudokuGridIcon, HexaGridIcon } from './components/icons';
 
 import './styles/variables.css';
@@ -185,6 +188,8 @@ export default function App() {
 
   const [isVictoryModalOpen, setIsVictoryModalOpen] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+  const [isInstructionsOpen, setIsInstructionsOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
   const {
     boardSize, setBoardSize,
     difficulty, setDifficulty,
@@ -228,7 +233,9 @@ export default function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <PortfolioAction portfolioUrl="https://dani-cabrera.dev" isPlaying={isPlaying} />
+        <div className="header-actions-left" style={{ display: 'flex', alignItems: 'center', justifySelf: 'flex-start' }}>
+          <InstructionsAction onClick={() => setIsInstructionsOpen(true)} isPlaying={isPlaying} />
+        </div>
 
         <div className="app-header__center">
           <div className="app-logo">
@@ -239,6 +246,7 @@ export default function App() {
         </div>
 
         <div className="header-actions-right" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', justifySelf: 'flex-end' }}>
+          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           <LeaderboardAction onClick={() => setIsLeaderboardOpen(true)} isPlaying={isPlaying} />
           <CafecitoAction cafecitoUrl="https://cafecito.app" isPlaying={isPlaying} />
         </div>
@@ -292,6 +300,11 @@ export default function App() {
       <LeaderboardModal
         isVisible={isLeaderboardOpen}
         onClose={() => setIsLeaderboardOpen(false)}
+      />
+
+      <InstructionsModal
+        isVisible={isInstructionsOpen}
+        onClose={() => setIsInstructionsOpen(false)}
       />
     </div>
   );
