@@ -48,21 +48,21 @@
 
 @media (max-width: 600px) {
   .sudoku-board.size-9 {
-    --cell-size-9: 40px;
+    --cell-size-9: 34px;
   }
 
   .sudoku-board.size-16 {
-    --cell-size-16: 26px;
+    --cell-size-16: 24px;
   }
 }
 
 @media (max-width: 380px) {
   .sudoku-board.size-9 {
-    --cell-size-9: 34px;
+    --cell-size-9: 29px;
   }
 
   .sudoku-board.size-16 {
-    --cell-size-16: 23px;
+    --cell-size-16: 21px;
   }
 }
 

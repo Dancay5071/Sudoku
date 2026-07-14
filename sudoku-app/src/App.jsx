@@ -5,9 +5,11 @@ import SudokuBoard from './components/SudokuBoard';
 import { SidebarLeft, SidebarRight } from './components/Sidebars';
 import VictoryModal from './components/VictoryModal';
 import PlayButton from './components/PlayButton';
-import { CafecitoAction, LeaderboardAction, InstructionsAction } from './components/Cafecito';
+import { CafecitoAction, LeaderboardAction, InstructionsAction } from './components/TopMenu';
 import LeaderboardModal from './components/LeaderboardModal';
 import InstructionsModal from './components/InstructionsModal';
+import SupportModal from './components/SupportModal';
+import Numpad from './components/Numpad';
 import useGameState from './hooks/useGameState';
 import useHint from './hooks/useHint';
 import useTheme from './hooks/useTheme';
@@ -37,7 +39,7 @@ const MODES = [
 const DIFFICULTIES = ['Fácil', 'Medio', 'Difícil'];
 
 
-function SetupScreen({ boardSize, setBoardSize, difficulty, setDifficulty, onPlay }) {
+function SetupScreen({ boardSize, setBoardSize, difficulty, setDifficulty, onPlay, hasSavedGame, onResume }) {
 
   return (
     <motion.div
@@ -89,6 +91,19 @@ function SetupScreen({ boardSize, setBoardSize, difficulty, setDifficulty, onPla
 
         <div className="action-area">
           <PlayButton onClick={onPlay} isPlaying={false} />
+          
+          {hasSavedGame && (
+            <motion.button
+              className="modal-btn modal-btn--secondary"
+              style={{ marginTop: '0.5rem', width: '200px' }}
+              onClick={onResume}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              Continuar Partida
+            </motion.button>
+          )}
+
           <p className="keyboard-hint">
             Navegá con <kbd className="kbd">↑↓←→</kbd> · Notas con <kbd className="kbd">N</kbd>
           </p>
@@ -123,6 +138,10 @@ function GameScreen({
   hintElapsedFraction,
   hintTotalCooldown,
   hintJustReady,
+  isPaused,
+  togglePause,
+  handleValueInput,
+  handleErase,
 }) {
   return (
     <motion.div
@@ -148,6 +167,8 @@ function GameScreen({
           peers={peers}
           selectedValue={selectedValue}
           completedCells={completedCells}
+          isPaused={isPaused}
+          onTogglePause={togglePause}
         />
       </div>
 
@@ -167,6 +188,8 @@ function GameScreen({
         hintJustReady={hintJustReady}
         isGameOver={isGameOver}
         isComplete={isComplete}
+        isPaused={isPaused}
+        onTogglePause={togglePause}
       />
 
 
@@ -182,6 +205,15 @@ function GameScreen({
         onBack={onBack}
         onRevive={onRevive}
       />
+
+      <Numpad
+        boardSize={boardSize}
+        onInput={handleValueInput}
+        onErase={handleErase}
+        isNotesMode={isNotesMode}
+        onToggleNotes={onToggleNotes}
+        disabled={isPaused || isGameOver || isComplete}
+      />
     </motion.div>
   );
 }
@@ -192,6 +224,7 @@ export default function App() {
   const [isVictoryModalOpen, setIsVictoryModalOpen] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isInstructionsOpen, setIsInstructionsOpen] = useState(false);
+  const [isSupportOpen, setIsSupportOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const {
     boardSize, setBoardSize,
@@ -199,6 +232,7 @@ export default function App() {
     isPlaying,
     isComplete,
     isGameOver,
+    isPaused,
     grid,
     selectedCell,
     peers,
@@ -211,8 +245,13 @@ export default function App() {
     returnToMenu,
     handleCellSelect,
     handleHint,
+    handleValueInput,
+    handleErase,
     completedCells,
     reviveGame,
+    togglePause,
+    resumeGame,
+    hasSavedGame,
   } = useGameState();
 
   const {
@@ -252,7 +291,7 @@ export default function App() {
 
         <div className="header-actions-right" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', justifySelf: 'flex-end' }}>
           <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-          <CafecitoAction cafecitoUrl="https://cafecito.app" isPlaying={isPlaying} />
+          <CafecitoAction onClick={() => setIsSupportOpen(true)} isPlaying={isPlaying} />
         </div>
       </header>
 
@@ -265,6 +304,8 @@ export default function App() {
               difficulty={difficulty}
               setDifficulty={setDifficulty}
               onPlay={startGame}
+              hasSavedGame={hasSavedGame}
+              onResume={resumeGame}
             />
           ) : (
             <GameScreen
@@ -292,6 +333,10 @@ export default function App() {
               hintElapsedFraction={hintElapsedFraction}
               hintTotalCooldown={hintTotalCooldown}
               hintJustReady={hintJustReady}
+              isPaused={isPaused}
+              togglePause={togglePause}
+              handleValueInput={handleValueInput}
+              handleErase={handleErase}
             />
           )}
         </AnimatePresence>
@@ -310,6 +355,12 @@ export default function App() {
       <InstructionsModal
         isVisible={isInstructionsOpen}
         onClose={() => setIsInstructionsOpen(false)}
+      />
+
+      <SupportModal
+        isVisible={isSupportOpen}
+        onClose={() => setIsSupportOpen(false)}
+        cafecitoUrl="https://cafecito.app/dani5071"
       />
     </div>
   );

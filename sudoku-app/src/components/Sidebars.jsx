@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { PencilLine, Eraser, ArrowLeft, Heart, Star } from 'lucide-react';
+import { PencilLine, ArrowLeft, Heart, Star, Pause, Play } from 'lucide-react';
 import { formatTime } from '../lib/gameUtils';
 import HintButton from './HintButton';
 import { calculateScore } from '../lib/leaderboard';
@@ -86,6 +86,8 @@ export function SidebarRight({
   hintJustReady,
   isGameOver,
   isComplete,
+  isPaused,
+  onTogglePause,
 }) {
   const currentScore = calculateScore({ elapsedTime, errorCount, difficulty, boardSize });
 
@@ -119,6 +121,16 @@ export function SidebarRight({
       <div className="sidebar-divider" />
 
       <div className="sidebar-actions">
+        <motion.button
+          className="sidebar-btn"
+          onClick={onTogglePause}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          title={isPaused ? "Reanudar juego" : "Pausar juego"}
+        >
+          {isPaused ? <Play size={20} /> : <Pause size={20} />}
+          <span className="btn-label">{isPaused ? "Reanudar" : "Pausar"}</span>
+        </motion.button>
         <motion.button
           id="notes-toggle-btn"
           className={`sidebar-btn ${isNotesMode ? 'sidebar-btn--active-notes' : ''}`}

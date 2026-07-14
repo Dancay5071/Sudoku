@@ -22,12 +22,10 @@ export function InstructionsAction({ onClick, isPlaying = false }) {
   );
 }
 
-export function CafecitoAction({ cafecitoUrl = 'https://cafecito.app', isPlaying = false }) {
+export function CafecitoAction({ onClick, isPlaying = false }) {
   return (
-    <motion.a
-      href={cafecitoUrl}
-      target="_blank"
-      rel="noopener noreferrer"
+    <motion.button
+      onClick={onClick}
       className={`header-action header-action--cafecito ${!isPlaying ? 'header-action--pulse' : ''}`}
       aria-label="Invitar un cafecito — apoyá el proyecto"
       animate={{ opacity: isPlaying ? 0.4 : 1, x: 0, y: 0 }}
@@ -38,7 +36,7 @@ export function CafecitoAction({ cafecitoUrl = 'https://cafecito.app', isPlaying
     >
       <CafecitoIcon size={14} aria-hidden="true" />
       <span className="header-action__label">Cafecito</span>
-    </motion.a>
+    </motion.button>
   );
 }
 

@@ -1,0 +1,72 @@
+.numpad-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 1rem auto 0;
+  padding: 0 0.5rem;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .numpad-container {
+    display: block;
+  }
+}
+
+.numpad-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.numpad-grid {
+  display: grid;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.numpad-grid-classic {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.numpad-grid-hex {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.numpad-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.numpad-btn:hover {
+  background: var(--cell-hover);
+}
+
+.numpad-btn:active {
+  background: var(--border-thin);
+}
+
+.numpad-btn-action {
+  background: var(--box-alt-bg);
+  color: var(--text-secondary);
+}
+
+.numpad-notes-active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary-hover);
+}
+
+.numpad-notes-active:hover {
+  background: var(--primary-hover);
+}

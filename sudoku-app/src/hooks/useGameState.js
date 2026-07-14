@@ -20,6 +20,7 @@ export default function useGameState() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [grid, setGrid] = useState([]);
   const [selectedCell, setSelectedCell] = useState(null);
   const [isNotesMode, setIsNotesMode] = useState(false);
@@ -42,8 +43,9 @@ export default function useGameState() {
   useEffect(() => () => stopTimer(), [stopTimer]);
 
   useEffect(() => {
-    if (isComplete || isGameOver) stopTimer();
-  }, [isComplete, isGameOver, stopTimer]);
+    if (isComplete || isGameOver || isPaused) stopTimer();
+    else if (isPlaying && !isPaused) startTimer();
+  }, [isComplete, isGameOver, isPaused, isPlaying, startTimer, stopTimer]);
 
   useEffect(() => {
     if (errorCount >= MAX_ERRORS && isPlaying && !isGameOver) {
@@ -62,8 +64,54 @@ export default function useGameState() {
     setIsGameOver(false);
     setElapsedTime(0);
     setIsPlaying(true);
+    setIsPaused(false);
     startTimer();
   }, [boardSize, difficulty, startTimer]);
+
+  const togglePause = useCallback(() => {
+    setIsPaused(prev => !prev);
+  }, []);
+
+  const resumeGame = useCallback(() => {
+    const saved = localStorage.getItem('sudoku_save');
+    if (saved) {
+      try {
+        const state = JSON.parse(saved);
+        setBoardSize(state.boardSize);
+        setDifficulty(state.difficulty);
+        setGrid(state.grid);
+        setErrorCount(state.errorCount);
+        setElapsedTime(state.elapsedTime);
+        setSelectedCell(null);
+        setIsNotesMode(false);
+        setIsComplete(false);
+        setIsGameOver(false);
+        setIsPaused(false);
+        setIsPlaying(true);
+        startTimer();
+      } catch (e) {
+        console.error('Failed to load saved game', e);
+      }
+    }
+  }, [startTimer]);
+
+  const hasSavedGame = !!localStorage.getItem('sudoku_save');
+
+  useEffect(() => {
+    if (isPlaying && !isComplete && !isGameOver) {
+      const stateToSave = {
+        boardSize,
+        difficulty,
+        grid,
+        errorCount,
+        elapsedTime,
+      };
+      localStorage.setItem('sudoku_save', JSON.stringify(stateToSave));
+    } else if (isComplete || isGameOver) {
+      localStorage.removeItem('sudoku_save');
+    }
+  }, [grid, elapsedTime, errorCount, boardSize, difficulty, isPlaying, isComplete, isGameOver]);
+
 
   const reviveGame = useCallback(() => {
     setErrorCount(MAX_ERRORS - 1);
@@ -78,6 +126,8 @@ export default function useGameState() {
     setIsGameOver(false);
     setSelectedCell(null);
     setIsNotesMode(false);
+    setIsPaused(false);
+    localStorage.removeItem('sudoku_save');
   }, [stopTimer]);
 
   const handleCellSelect = useCallback((index) => {
@@ -159,6 +209,16 @@ export default function useGameState() {
 
         if (isCorrect) {
           pendingCompleteRef.current = isBoardComplete(newGrid);
+          const cellPeers = getPeers(selectedCell, boardSize);
+          cellPeers.forEach(peerIdx => {
+            const peer = newGrid[peerIdx];
+            if (peer.value === null && peer.notes.includes(intValue)) {
+              newGrid[peerIdx] = {
+                ...peer,
+                notes: peer.notes.filter(n => n !== intValue)
+              };
+            }
+          });
         }
       }
 
@@ -232,6 +292,7 @@ export default function useGameState() {
     isPlaying,
     isComplete,
     isGameOver,
+    isPaused,
     grid,
     selectedCell,
     peers,
@@ -247,6 +308,11 @@ export default function useGameState() {
     returnToMenu,
     handleCellSelect,
     handleHint,
+    handleValueInput,
+    handleErase,
     reviveGame,
+    togglePause,
+    resumeGame,
+    hasSavedGame,
   };
 }

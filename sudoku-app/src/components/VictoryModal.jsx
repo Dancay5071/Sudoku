@@ -311,62 +311,80 @@ export default function VictoryModal({
               </motion.div>
             )}
 
-              <motion.div
-                className="modal-actions"
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.58 }}
-                style={{ flexDirection: 'column', gap: '0.75rem' }}
-              >
-                {isGameOver && (
-                  <motion.button
-                    className="modal-btn modal-btn--primary"
-                    style={{ backgroundColor: 'var(--accent)', color: 'white', borderColor: 'var(--accent)' }}
-                    onClick={() => {
-                      setSimulatingAd(true);
+            <motion.div
+              className="modal-actions"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.58 }}
+              style={{ flexDirection: 'column', gap: '0.75rem' }}
+            >
+              {isGameOver && (
+                <motion.button
+                  className="modal-btn modal-btn--primary"
+                  style={{ backgroundColor: 'var(--accent)', color: 'white', borderColor: 'var(--accent)' }}
+                  onClick={() => {
+                    setSimulatingAd(true);
+                    if (window.CrazyGames && window.CrazyGames.SDK) {
+                      window.CrazyGames.SDK.ad.requestAd('rewarded', {
+                        adStarted: () => {
+                          console.log('Ad started');
+                        },
+                        adFinished: () => {
+                          console.log('Ad finished');
+                          setSimulatingAd(false);
+                          onRevive();
+                        },
+                        adError: (error) => {
+                          console.log('Ad error', error);
+                          setSimulatingAd(false);
+                          alert('Hubo un error cargando el anuncio.');
+                        }
+                      });
+                    } else {
                       setTimeout(() => {
                         setSimulatingAd(false);
                         onRevive();
                       }, 3000);
-                    }}
-                    disabled={simulatingAd}
-                    whileHover={{ scale: simulatingAd ? 1 : 1.02 }}
-                    whileTap={{ scale: simulatingAd ? 1 : 0.98 }}
-                  >
-                    {simulatingAd ? (
-                      <div className="pastel-spinner" style={{ width: 16, height: 16, borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)', borderTopColor: 'white' }} />
-                    ) : (
-                      <Heart size={16} fill="white" />
-                    )}
-                    {simulatingAd ? 'Viendo anuncio...' : 'Revivir (Ver Ad)'}
-                  </motion.button>
-                )}
-                
-                <div style={{ display: 'flex', gap: '0.75rem', width: '100%' }}>
-                  <motion.button
-                    id="victory-new-game"
-                    className="modal-btn modal-btn--primary"
-                    style={{ flex: 1 }}
-                    onClick={onNewGame}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    <RotateCcw size={16} />
-                    Nuevo Juego
-                  </motion.button>
-                  <motion.button
-                    id="victory-back"
-                    className="modal-btn modal-btn--secondary"
-                    style={{ flex: 1 }}
-                    onClick={onBack}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    <Home size={16} />
-                    Menú
-                  </motion.button>
-                </div>
-              </motion.div>
+                    }
+                  }}
+                  disabled={simulatingAd}
+                  whileHover={{ scale: simulatingAd ? 1 : 1.02 }}
+                  whileTap={{ scale: simulatingAd ? 1 : 0.98 }}
+                >
+                  {simulatingAd ? (
+                    <div className="pastel-spinner" style={{ width: 16, height: 16, borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)', borderTopColor: 'white' }} />
+                  ) : (
+                    <Heart size={16} fill="white" />
+                  )}
+                  {simulatingAd ? 'Viendo anuncio...' : 'Revivir (Ver Ad)'}
+                </motion.button>
+              )}
+
+              <div style={{ display: 'flex', gap: '0.75rem', width: '100%' }}>
+                <motion.button
+                  id="victory-new-game"
+                  className="modal-btn modal-btn--primary"
+                  style={{ flex: 1 }}
+                  onClick={onNewGame}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  <RotateCcw size={16} />
+                  Nuevo Juego
+                </motion.button>
+                <motion.button
+                  id="victory-back"
+                  className="modal-btn modal-btn--secondary"
+                  style={{ flex: 1 }}
+                  onClick={onBack}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  <Home size={16} />
+                  Menú
+                </motion.button>
+              </div>
+            </motion.div>
           </motion.div>
         </motion.div>
       )}

@@ -105,9 +105,11 @@
   .game-sidebar {
     width: 100%;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 0.8rem 1rem;
+    padding: 0.6rem 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.8rem;
   }
 }
 
@@ -119,8 +121,7 @@
 
 @media (max-width: 800px) {
   .sidebar-divider {
-    width: 1px;
-    height: 30px;
+    display: none;
   }
 }
 
@@ -155,6 +156,8 @@
 @media (max-width: 800px) {
   .sidebar-actions {
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
 
