@@ -157,6 +157,7 @@ function GameScreen({
         isNotesMode={isNotesMode}
         onToggleNotes={onToggleNotes}
         elapsedTime={elapsedTime}
+        errorCount={errorCount}
         onHint={onHint}
         isHintOnCooldown={isHintOnCooldown}
         hintCooldownRemaining={hintCooldownRemaining}
@@ -233,8 +234,9 @@ export default function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <div className="header-actions-left" style={{ display: 'flex', alignItems: 'center', justifySelf: 'flex-start' }}>
+        <div className="header-actions-left" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', justifySelf: 'flex-start' }}>
           <InstructionsAction onClick={() => setIsInstructionsOpen(true)} isPlaying={isPlaying} />
+          <LeaderboardAction onClick={() => setIsLeaderboardOpen(true)} isPlaying={isPlaying} />
         </div>
 
         <div className="app-header__center">
@@ -247,7 +249,6 @@ export default function App() {
 
         <div className="header-actions-right" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', justifySelf: 'flex-end' }}>
           <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-          <LeaderboardAction onClick={() => setIsLeaderboardOpen(true)} isPlaying={isPlaying} />
           <CafecitoAction cafecitoUrl="https://cafecito.app" isPlaying={isPlaying} />
         </div>
       </header>

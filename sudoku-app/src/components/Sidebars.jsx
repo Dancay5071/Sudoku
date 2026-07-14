@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { PencilLine, Eraser, ArrowLeft, Heart } from 'lucide-react';
+import { PencilLine, Eraser, ArrowLeft, Heart, Star } from 'lucide-react';
 import { formatTime } from '../lib/gameUtils';
 import HintButton from './HintButton';
+import { calculateScore } from '../lib/leaderboard';
 
 function HeartIcon({ index, errorCount }) {
   const isLost = index < errorCount;
@@ -76,6 +77,7 @@ export function SidebarRight({
   isNotesMode,
   onToggleNotes,
   elapsedTime,
+  errorCount,
   onHint,
   isHintOnCooldown,
   hintCooldownRemaining,
@@ -85,6 +87,8 @@ export function SidebarRight({
   isGameOver,
   isComplete,
 }) {
+  const currentScore = calculateScore({ elapsedTime, errorCount, difficulty, boardSize });
+
   return (
     <div className="game-sidebar sidebar-right">
       <div className="sidebar-stats">
@@ -99,6 +103,16 @@ export function SidebarRight({
         <span className="stats-label">Tiempo</span>
         <div className="toolbar-timer" aria-label="Tiempo transcurrido" aria-live="polite">
           {formatTime(elapsedTime)}
+        </div>
+      </div>
+
+      <div className="sidebar-divider" />
+
+      <div className="sidebar-stats">
+        <span className="stats-label">Puntaje</span>
+        <div className="toolbar-score" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-main)' }} aria-label="Puntaje actual" aria-live="polite">
+          <Star size={14} style={{ color: 'var(--primary)', fill: 'var(--primary)' }} />
+          {currentScore.toLocaleString()}
         </div>
       </div>
 
