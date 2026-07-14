@@ -65,6 +65,12 @@ export default function useGameState() {
     startTimer();
   }, [boardSize, difficulty, startTimer]);
 
+  const reviveGame = useCallback(() => {
+    setErrorCount(MAX_ERRORS - 1);
+    setIsGameOver(false);
+    startTimer();
+  }, [startTimer]);
+
   const returnToMenu = useCallback(() => {
     stopTimer();
     setIsPlaying(false);
@@ -241,5 +247,6 @@ export default function useGameState() {
     returnToMenu,
     handleCellSelect,
     handleHint,
+    reviveGame,
   };
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, XCircle, Clock, Star, Send, RotateCcw, Home } from 'lucide-react';
+import { Trophy, XCircle, Clock, Star, Send, RotateCcw, Home, Heart } from 'lucide-react';
 import { formatTime } from '../lib/gameUtils';
 import { calculateScore, fetchTopScores, submitScore, MAX_SCORES } from '../lib/leaderboard';
 
@@ -57,6 +57,7 @@ export default function VictoryModal({
   difficulty,
   onNewGame,
   onBack,
+  onRevive,
 }) {
   const [playerName, setPlayerName] = useState('');
   const [scores, setScores] = useState([]);
@@ -64,6 +65,7 @@ export default function VictoryModal({
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [newEntryIdx, setNewEntryIdx] = useState(-1);
+  const [simulatingAd, setSimulatingAd] = useState(false);
 
   const myScore = useMemo(
     () =>
@@ -309,33 +311,62 @@ export default function VictoryModal({
               </motion.div>
             )}
 
-            <motion.div
-              className="modal-actions"
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.58 }}
-            >
-              <motion.button
-                id="victory-new-game"
-                className="modal-btn modal-btn--primary"
-                onClick={onNewGame}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+              <motion.div
+                className="modal-actions"
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.58 }}
+                style={{ flexDirection: 'column', gap: '0.75rem' }}
               >
-                <RotateCcw size={16} />
-                Nuevo Juego
-              </motion.button>
-              <motion.button
-                id="victory-back"
-                className="modal-btn modal-btn--secondary"
-                onClick={onBack}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <Home size={16} />
-                Menú Principal
-              </motion.button>
-            </motion.div>
+                {isGameOver && (
+                  <motion.button
+                    className="modal-btn modal-btn--primary"
+                    style={{ backgroundColor: 'var(--accent)', color: 'white', borderColor: 'var(--accent)' }}
+                    onClick={() => {
+                      setSimulatingAd(true);
+                      setTimeout(() => {
+                        setSimulatingAd(false);
+                        onRevive();
+                      }, 3000);
+                    }}
+                    disabled={simulatingAd}
+                    whileHover={{ scale: simulatingAd ? 1 : 1.02 }}
+                    whileTap={{ scale: simulatingAd ? 1 : 0.98 }}
+                  >
+                    {simulatingAd ? (
+                      <div className="pastel-spinner" style={{ width: 16, height: 16, borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)', borderTopColor: 'white' }} />
+                    ) : (
+                      <Heart size={16} fill="white" />
+                    )}
+                    {simulatingAd ? 'Viendo anuncio...' : 'Revivir (Ver Ad)'}
+                  </motion.button>
+                )}
+                
+                <div style={{ display: 'flex', gap: '0.75rem', width: '100%' }}>
+                  <motion.button
+                    id="victory-new-game"
+                    className="modal-btn modal-btn--primary"
+                    style={{ flex: 1 }}
+                    onClick={onNewGame}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <RotateCcw size={16} />
+                    Nuevo Juego
+                  </motion.button>
+                  <motion.button
+                    id="victory-back"
+                    className="modal-btn modal-btn--secondary"
+                    style={{ flex: 1 }}
+                    onClick={onBack}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <Home size={16} />
+                    Menú
+                  </motion.button>
+                </div>
+              </motion.div>
           </motion.div>
         </motion.div>
       )}

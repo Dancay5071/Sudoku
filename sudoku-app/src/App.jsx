@@ -115,6 +115,7 @@ function GameScreen({
   onToggleNotes,
   onBack,
   onNewGame,
+  onRevive,
   completedCells,
   onHint,
   isHintOnCooldown,
@@ -179,6 +180,7 @@ function GameScreen({
         difficulty={difficulty}
         onNewGame={onNewGame}
         onBack={onBack}
+        onRevive={onRevive}
       />
     </motion.div>
   );
@@ -210,6 +212,7 @@ export default function App() {
     handleCellSelect,
     handleHint,
     completedCells,
+    reviveGame,
   } = useGameState();
 
   const {
@@ -281,6 +284,7 @@ export default function App() {
               onToggleNotes={toggleNotes}
               onBack={returnToMenu}
               onNewGame={startGame}
+              onRevive={reviveGame}
               completedCells={completedCells}
               onHint={onHint}
               isHintOnCooldown={isHintOnCooldown}
