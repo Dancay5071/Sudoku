@@ -65,7 +65,6 @@ export default function VictoryModal({
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [newEntryIdx, setNewEntryIdx] = useState(-1);
-  const [simulatingAd, setSimulatingAd] = useState(false);
 
   const myScore = useMemo(
     () =>
@@ -322,41 +321,12 @@ export default function VictoryModal({
                 <motion.button
                   className="modal-btn modal-btn--primary"
                   style={{ backgroundColor: 'var(--accent)', color: 'white', borderColor: 'var(--accent)' }}
-                  onClick={() => {
-                    setSimulatingAd(true);
-                    if (window.CrazyGames && window.CrazyGames.SDK) {
-                      window.CrazyGames.SDK.ad.requestAd('rewarded', {
-                        adStarted: () => {
-                          console.log('Ad started');
-                        },
-                        adFinished: () => {
-                          console.log('Ad finished');
-                          setSimulatingAd(false);
-                          onRevive();
-                        },
-                        adError: (error) => {
-                          console.log('Ad error', error);
-                          setSimulatingAd(false);
-                          alert('Hubo un error cargando el anuncio.');
-                        }
-                      });
-                    } else {
-                      setTimeout(() => {
-                        setSimulatingAd(false);
-                        onRevive();
-                      }, 3000);
-                    }
-                  }}
-                  disabled={simulatingAd}
-                  whileHover={{ scale: simulatingAd ? 1 : 1.02 }}
-                  whileTap={{ scale: simulatingAd ? 1 : 0.98 }}
+                  onClick={onRevive}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  {simulatingAd ? (
-                    <div className="pastel-spinner" style={{ width: 16, height: 16, borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)', borderTopColor: 'white' }} />
-                  ) : (
-                    <Heart size={16} fill="white" />
-                  )}
-                  {simulatingAd ? 'Viendo anuncio...' : 'Revivir (Ver Ad)'}
+                  <Clock size={16} />
+                  Continuar (+3 min)
                 </motion.button>
               )}
 

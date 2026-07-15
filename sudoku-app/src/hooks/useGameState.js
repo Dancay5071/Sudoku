@@ -115,6 +115,7 @@ export default function useGameState() {
 
   const reviveGame = useCallback(() => {
     setErrorCount(MAX_ERRORS - 1);
+    setElapsedTime(t => t + 180);
     setIsGameOver(false);
     startTimer();
   }, [startTimer]);
